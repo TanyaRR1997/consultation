@@ -1,0 +1,84 @@
+openapi: 3.0.3
+info:
+    title: Prescription Consultation Service API
+    version: 1.0.0
+    description: API for medical prescription eligibility
+    contact:
+        name: Tanya
+        email: yatt-mimi@hotmail.com
+servers:
+    - url: http://localhost:8080
+paths:
+    /questions:
+        get:
+            summary: Get all consultation questions
+            responses:
+                '200':
+                    description: Successful response
+                    content:
+                        application.json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Question'
+                '404':
+                   description: Resource not found
+    /answers:
+        post:
+            summary: Send customer answers
+            requestBody:
+                required: true
+                content:
+                    application.json:
+                        schema:
+                            type: array
+                            items:
+                                $ref: '#/components/schemas/Answer'
+            responses:
+                '200':
+                    description: Answer sent successfully
+                '400':
+                    description: Bad Request
+                '404':
+                    description: Resource Not Found
+                '415':
+                    description: Unsupported Media Type
+                '500':
+                    description: Internal Server Error
+    /prescription:
+        get:
+            summary: Check prescription eligibility
+            responses:
+                '200':
+                    description: Successful response
+                    content:
+                        application.json:
+                            schema:
+                                type: object
+                                properties:
+                                    eligible:
+                                        type: boolean
+                '400':
+                    description: Bad Request
+                '404':
+                    description: Resource not found
+                '500':
+                    description: Internal Server Error
+components:
+    schemas:
+        Question:
+            type: object
+            properties:
+                id:
+                    type: integer
+                questionString:
+                    type: string
+        Answer:
+            type: object
+            properties:
+                questionsId:
+                    type: integer
+                customerId:
+                    type: integer
+                answerString:
+                    type: string
